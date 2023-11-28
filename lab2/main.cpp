@@ -54,8 +54,10 @@ void* solve(void* args){
             }
         }
         pthread_barrier_wait(l_args->barrier);
-        if (l_args->tid == 0){
-            *l_args->matrix = *l_args->result;
+        for(int x = edge_r + l_args->tid; x < l_args->rows_m - edge_r; x += l_args->thread_count){
+            for(int y = edge_c; y < l_args->columns_m - edge_c; ++y){
+                (*l_args->matrix)[x][y] = (*l_args->result)[x][y];
+            }
         }
         pthread_barrier_wait(l_args->barrier);
     }
@@ -68,11 +70,11 @@ int main(int argc, char* argv[]) {
         cout << "Требуется количество потоков" << endl;
         return 1;
     }
-    // int thread_count = atoi(argv[1]);
-    // if (thread_count < 1){
-    //     cout << "Количество потоков не может быть меньше 1" << endl;
-    //     return 1; 
-    // }
+    int thread_count = atoi(argv[1]);
+    if (thread_count < 1){
+        cout << "Количество потоков не может быть меньше 1" << endl;
+        return 1; 
+    }      
 
     char *filename = NULL;
     char c; 
@@ -123,24 +125,24 @@ int main(int argc, char* argv[]) {
     // cout << "Введите количество применений фильтра" << endl;
     cin >> rep;
 
-    vector<int> thread_count = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 24, 32, 42, 48, 54, 60, 64, 128, 256, 512, 1024};
+    //vector<int> thread_count = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 24, 32, 42, 48, 54, 60, 64, 128, 256, 512, 1024};
 
-    for (int idd : thread_count){
-    vector<pthread_t> tid(idd);
+    //for (int idd : thread_count){
+    vector<pthread_t> tid(thread_count);
 
     pthread_barrier_t barrier;
-    pthread_barrier_init(&barrier, NULL, idd);
+    pthread_barrier_init(&barrier, NULL, thread_count);
 
  
     auto begin{chrono::steady_clock::now()}; 
 
-    vector<arg> Arg(idd);
+    vector<arg> Arg(thread_count);
     vector<vector<int>> result = source;
 
-    for (int i = 0; i < idd; ++i){
+    for (int i = 0; i < thread_count; ++i){
         Arg[i].barrier = &barrier;
         Arg[i].tid = i;
-        Arg[i].thread_count = idd;
+        Arg[i].thread_count = thread_count;
         Arg[i].rows_w = rows_w;
         Arg[i].rows_m = rows_m;
         Arg[i].rep = rep;
@@ -151,15 +153,15 @@ int main(int argc, char* argv[]) {
         pthread_create(&tid[i], NULL, solve, (void *)&Arg[i]);
     }
 
-    for (int i = 0; i < idd; ++i){
+    for (int i = 0; i < thread_count; ++i){
         pthread_join(tid[i], NULL);
     }
     
     auto end{chrono::steady_clock::now()}; 
     auto elapsed_ms{chrono::duration_cast<chrono::milliseconds>(end - begin)}; 
-    cout << idd << " " << elapsed_ms.count() << endl;
+    cout << "Время: " << elapsed_ms.count() << endl;
     source = *Arg[0].matrix;
-    }
+    // }
 
 
     if(flag_if_rotated){
