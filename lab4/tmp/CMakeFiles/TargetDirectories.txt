@@ -1,0 +1,6 @@
+/home/loco/codelab/os/lab4/tmp/CMakeFiles/lib1.dir
+/home/loco/codelab/os/lab4/tmp/CMakeFiles/lib2.dir
+/home/loco/codelab/os/lab4/tmp/CMakeFiles/linking.dir
+/home/loco/codelab/os/lab4/tmp/CMakeFiles/loading.dir
+/home/loco/codelab/os/lab4/tmp/CMakeFiles/edit_cache.dir
+/home/loco/codelab/os/lab4/tmp/CMakeFiles/rebuild_cache.dir

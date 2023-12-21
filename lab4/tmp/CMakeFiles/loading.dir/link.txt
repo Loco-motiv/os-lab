@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/loading.dir/main_load.cpp.o -o loading  -Wl,-rpath,/home/loco/codelab/os/lab4/tmp liblib1.so liblib2.so 
