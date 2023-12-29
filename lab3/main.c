@@ -10,7 +10,7 @@
 int main() { 
     char *filename = NULL;
     char c; 
-    int len = 1; 
+    int len = 1;        
     filename = (char*) malloc(sizeof(char)); 
     //printf("Введите имя файла: \n"); 
     while((c = getchar()) != '\n') { 
@@ -30,20 +30,20 @@ int main() {
 
     //while(1){
         //printf("Введите команду: \n");  
-        int num; 
-        char ch; 
-        while (1) { 
-            if (scanf("%d", &num) == EOF){
-                exit(0);
-            }  
-            array[count - 1] = num;     
-            scanf("%c", &ch);  
-            if (ch == '\n') {  
-                break; 
-            } 
-            count++;
-            array = (int*) realloc(array, count); 
-        }
+    int num; 
+    char ch; 
+    while (1) { 
+        if (scanf("%d", &num) == EOF){
+            exit(0);
+        }  
+        array[count - 1] = num;     
+        scanf("%c", &ch);  
+        if (ch == '\n') {  
+            break; 
+        } 
+        count++;
+        array = (int*) realloc(array, count); 
+    }
     
 
     int fd = shm_open("/shd", O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);

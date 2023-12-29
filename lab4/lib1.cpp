@@ -1,3 +1,5 @@
+#include "libs.h"
+
 float e(int x){
     return (1 + 1/x) ^ x;
 }
